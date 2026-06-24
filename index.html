@@ -59,7 +59,7 @@ const EMAILJS_SERVICE_ID = "service_wpky3om";
 const EMAILJS_TEMPLATE_BESTELLER = "template_bz93ufs";
 const EMAILJS_TEMPLATE_KASSIERER = "template_vsim3m6";
 
-const KASSIERER_EMAIL = "ugur.altan@gmx.de";
+const KASSIERER_EMAIL = "kassierer@fsv-nieder-olm.de";
 const REPLY_TO_EMAIL = "kassierer@fsv-nieder-olm.de";
 const PAYPAL_HINWEIS = "@FSVNO";
 const BANK_HINWEIS = "Volksbank Darmstadt Mainz, IBAN: DE37 5519 0000 0037 6010 10";
@@ -453,14 +453,19 @@ Telefon: ${customer.telefon}`;
       message: kassiererText
     });
 
-    box.textContent = `Danke, deine Bestellung wurde übermittelt.
+    box.textContent = `Danke, deine Bestellung wurde erfolgreich übermittelt.
 
 Bestellnummer: ${orderId}
 
 Eine Bestellbestätigung wurde an ${customer.email} gesendet.
-Die Test-Kassiereradresse wurde unter ${KASSIERER_EMAIL} informiert.
 
-Die Bestellung wird erst nach Zahlungseingang weiterverarbeitet.`;
+Der Kassierer des FSV Nieder-Olm wurde über die Bestellung informiert.
+
+Die Bestellung wurde in der Bestellübersicht gespeichert.
+
+Die Bestellung wird nach Zahlungseingang weiterverarbeitet.
+
+Sobald deine Bestellung bei Sport Weber in Saulheim abholbereit ist, wirst du vom Verein informiert.`;
   } catch (err) {
     console.error(err);
     box.textContent = `Die Bestellung konnte nicht automatisch versendet werden.
