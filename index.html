@@ -133,15 +133,18 @@ function shoeCalc(v) {
 function currentPrice(item, id) {
   const sizeEl = document.getElementById('size_'+id);
   const shoeEl = document.getElementById('shoe_'+id);
+  const qtyEl = document.getElementById('qty_'+id);
   const size = sizeEl ? sizeEl.value : '';
+  const qty = Math.max(1, parseInt(qtyEl?.value || '1', 10));
   const base = isChildSize(size) ? item.child : item.adult;
   const ini = document.getElementById('ini_'+id)?.checked ? 3.5 : 0;
   const badge = document.getElementById('badge_'+id)?.checked ? 4.5 : 0;
   const num = document.getElementById('num_'+id)?.checked ? 3.5 : 0;
-  const price = base + ini + badge + num;
-  document.getElementById('price_'+id).textContent = euro(price);
+  const unitPrice = base + ini + badge + num;
+  const totalPrice = unitPrice * qty;
+  document.getElementById('price_'+id).textContent = qty > 1 ? `${euro(totalPrice)} (${qty} × ${euro(unitPrice)})` : euro(unitPrice);
   if(shoeEl) document.getElementById('shoeres_'+id).textContent = shoeCalc(shoeEl.value) ? 'Ermittelte Größe: '+shoeCalc(shoeEl.value) : 'Schuhgröße eingeben';
-  return price;
+  return totalPrice;
 }
 function renderProducts() {
   const root = document.getElementById('products');
@@ -157,11 +160,11 @@ function renderProducts() {
       <h3>${it.name}</h3>
       <div><span class="badge">${it.category}</span></div>
       <div>Aktueller Preis: <span class="price" id="price_${idx}">${euro(it.child)}</span></div>
-      <div class="row"><div>${sizeInput}</div><div><label>Menge</label><input id="qty_${idx}" type="number" value="1" min="1"></div></div>
+      <div class="row"><div>${sizeInput}</div><div><label>Menge</label><input id="qty_${idx}" type="number" value="1" min="1" oninput="currentPrice(items[${idx}],${idx})"></div></div>
       <div class="opts">
-        ${it.initials ? `<label class="optline"><input type="checkbox" id="ini_${idx}" onchange="updateRequiredCustomizationFields(idx);currentPrice(items[${idx}],${idx})"> Initialen +3,50 €</label><input id="initxt_${idx}" placeholder="z.B. BM">` : ''}
+        ${it.initials ? `<label class="optline"><input type="checkbox" id="ini_${idx}" onchange="updateRequiredCustomizationFields(${idx});currentPrice(items[${idx}],${idx})"> Initialen +3,50 €</label><input id="initxt_${idx}" placeholder="z.B. BM">` : ''}
         ${it.badge ? `<label class="optline"><input type="checkbox" id="badge_${idx}" onchange="currentPrice(items[${idx}],${idx})"> Wappen +4,50 €</label>` : ''}
-        ${it.number ? `<label class="optline"><input type="checkbox" id="num_${idx}" onchange="updateRequiredCustomizationFields(idx);currentPrice(items[${idx}],${idx})"> Rückenziffer +3,50 €</label><input id="numtxt_${idx}" placeholder="z.B. 10">` : ''}
+        ${it.number ? `<label class="optline"><input type="checkbox" id="num_${idx}" onchange="updateRequiredCustomizationFields(${idx});currentPrice(items[${idx}],${idx})"> Rückenziffer +3,50 €</label><input id="numtxt_${idx}" placeholder="z.B. 10">` : ''}
       </div>
       <button class="add" onclick="addToCart(${idx})">In den Warenkorb</button>
     </div>`
