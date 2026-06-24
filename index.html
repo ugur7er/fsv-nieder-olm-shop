@@ -235,8 +235,8 @@ function buildOrderText(orderId, customer, sum) {
     if (c.num) extras.push('Rückennummer');
     const extrasText = extras.length ? ` | Veredelung: ${extras.join(', ')}` : '';
     const sizeText = c.resolved || c.size || '-';
-    return `${i + 1}. ${c.qty}× ${c.name} | Größe: ${sizeText}${extrasText} | Betrag: ${euro(c.line)}`;
-  }).join('\n');
+    return `${i + 1}. ${c.qty}× ${c.name}\n   Größe: ${sizeText}${extrasText}\n   Betrag: ${euro(c.line)}`;
+  }).join('\n\n');
 
   return `Bestellnummer: ${orderId}
 
